@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.search.SearchFragment"
+    android:background="@color/colorBackground"
+    android:paddingTop="15dp"
+    android:paddingRight="25dp"
+    android:paddingLeft="25dp">
+
+   <com.google.android.material.appbar.AppBarLayout
+       android:id="@+id/abl_search_fragment"
+       android:layout_width="match_parent"
+       android:layout_height="?attr/actionBarSize"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintRight_toRightOf="parent">
+
+       <com.mancj.materialsearchbar.MaterialSearchBar
+           android:id="@+id/sv_search_view"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:background="@color/colorBackground"
+           app:mt_speechMode="true"
+           app:mt_hint="@string/search_hint"
+           app:mt_roundedSearchBarEnabled="true"
+           app:mt_placeholder="@string/search_hint"
+
+
+           />
+
+
+
+   </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:id="@+id/fragment_container_search_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/abl_search_fragment"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="?attr/actionBarSize"
+
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MovieStreamer</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">search</string>
+    <string name="title_my_library">My Library</string>
+    <string name="title_Movies">Movies</string>
+    <string name="title_Series">Series</string>
+    <string name="title_live_tv">Live TV</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cast"><![CDATA[Cast & Crew]]></string>
+    <string name="search_hint">Movies ,Series, Channels</string>
+
+</resources>

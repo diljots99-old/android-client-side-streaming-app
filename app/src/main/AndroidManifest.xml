@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".auth.PhoneAuthActivity"></activity>
+        <activity android:name=".auth.LoginScreenActivity" />
         <activity android:name=".ui.movies.MovieDetailsActivity" />
         <activity
             android:name=".media_player.VideoPlayerActivity"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".media_player.TorrentStreammer" />
-
         <activity
             android:name=".DashboardActivity"
             android:label="@string/title_activity_main">
@@ -29,7 +29,6 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

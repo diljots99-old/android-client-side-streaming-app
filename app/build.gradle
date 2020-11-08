@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -10,8 +11,12 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -46,4 +51,16 @@ dependencies {
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+//    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    implementation 'com.github.michael-rapp:android-material-validation:3.0.1'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
+    implementation 'com.hbb20:ccp:2.4.0'
+
+    implementation 'com.github.aabhasr1:OtpView:v1.1.2'
+
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

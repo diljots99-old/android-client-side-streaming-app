@@ -37,7 +37,7 @@ public class PeoplePosterAdapter extends RecyclerView.Adapter<PeoplePosterAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.people_poster_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.people_poster_item, parent, false);
         return new PeoplePosterAdapter.ViewHolder(view);
     }
 
@@ -47,17 +47,15 @@ public class PeoplePosterAdapter extends RecyclerView.Adapter<PeoplePosterAdapte
         try {
             holder.tv_person_name.setText(mData.get(position).getString("name"));
 
-            if (mData.get(position).getString("type").contains("cast")){
-                holder.tv_character_name.setText(mData.get(position).getString("character"));
-            }
-            else{
-                holder.tv_character_name.setText(mData.get(position).getString("job"));
+            if (mData.get(position).getString("type").contains("cast")) {
+                holder.tv_character_name.setText('"'+mData.get(position).getString("character")+'"');
+            } else {
+                holder.tv_character_name.setText('"'+mData.get(position).getString("job")+'"');
 
             }
             Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).setBaseAlpha(0.9f).setHighlightAlpha(0.8f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT).build();
 //        Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).build();
-            String url = "http://www.test.diljotsingh.com/people/profile_image/" + mData.get(position).getInt("id") +"?width=200";
-
+            String url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_MOVIE_PEOPLE_PROFILE_IMAGE) + mData.get(position).getInt("id") + "?width=200";
 
 
             ShimmerDrawable shimmerDrawable = new ShimmerDrawable();
@@ -65,8 +63,9 @@ public class PeoplePosterAdapter extends RecyclerView.Adapter<PeoplePosterAdapte
             Glide.with(mContext)
                     .load(url)
                     .placeholder(shimmerDrawable)
-
+                    .error(R.drawable.poster_placeholder_dark)
                     .centerCrop()
+                    .fitCenter()
                     .into(holder.iv_people_poster);
 
         } catch (JSONException e) {
@@ -81,10 +80,11 @@ public class PeoplePosterAdapter extends RecyclerView.Adapter<PeoplePosterAdapte
         return mData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView tv_character_name,tv_person_name;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView tv_character_name, tv_person_name;
         public ImageView iv_people_poster;
         public ConstraintLayout cl_container;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_character_name = itemView.findViewById(R.id.tv_character_name);

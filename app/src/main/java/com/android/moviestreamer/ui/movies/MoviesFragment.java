@@ -3,7 +3,6 @@ package com.android.moviestreamer.ui.movies;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,18 +22,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MoviesFragment extends Fragment {
 
     private static final String TAG = "MoviesFragment";
-    private RecyclerView rv_now_playing,rv_popular,rv_top_rated;
-    private ShimmerFrameLayout sfl_now_playing,sfl_popular,sfl_top_rated;
+    private RecyclerView rv_now_playing,rv_popular,rv_top_rated,rv_new_releases;
+    private ShimmerFrameLayout sfl_now_playing,sfl_popular,sfl_top_rated,sfl_new_releases;
     List<Movie> mData_top_Rated = new ArrayList<>();
     List<Movie> mData_popular = new ArrayList<>();
-    List<Movie> mData_now_playing = new ArrayList<>();
 
+    List<Movie> mData_now_playing = new ArrayList<>();
+    List<Movie> mData_new_releases = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,24 +43,77 @@ public class MoviesFragment extends Fragment {
         rv_now_playing = root.findViewById(R.id.rv_now_playing);
         rv_popular = root.findViewById(R.id.rv_popular);
         rv_top_rated = root.findViewById(R.id.rv_top_rated);
+        rv_new_releases = root.findViewById(R.id.rv_new_releases);
 
         sfl_top_rated = root.findViewById(R.id.sfl_top_rated);
         sfl_now_playing = root.findViewById(R.id.sfl_now_playing);
         sfl_popular = root.findViewById(R.id.sfl_popular);
+        sfl_new_releases = root.findViewById(R.id.sfl_new_releases);
 
+        Initialize_New_Releases();
         Initialize_Now_Playing();
         Initialize_Popular();
         Initialize_Top_Rated();
 
+
         return root;
     }
 
+    public  void Initialize_New_Releases(){
+        rv_new_releases.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        rv_new_releases.setItemViewCacheSize(10);
+        rv_new_releases.setDrawingCacheEnabled(true);
+        rv_new_releases.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        String url = getString(R.string.API_BASE_URL) + getString(R.string.API_MOVIE_NEW_RELEASES_MOVIES);
+
+        AndroidNetworking.get(url)
+                .addQueryParameter("no_of_pages","4")
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, "onResponse: "+response);
+                Log.d(TAG,"onResponse: Length "+response.length());
+                try {
+                    JSONArray listOfMovies = (JSONArray) response.get("results");
+                    int length = (int) response.get("length");
+                    Log.d(TAG, "onResponse: "+listOfMovies);
+                    Log.d(TAG, "onResponse: "+listOfMovies.length());
+
+                    Log.d(TAG, "onResponse: "+length);
+                    for (int index=0;index<listOfMovies.length();index++  ){
+                        JSONObject movieJSON = (JSONObject) listOfMovies.get(index);
+                        Movie movie = new Movie(movieJSON);
+                        mData_new_releases.add(movie);
+                        Log.d(TAG, "onResponse: "+movie);
+                    }
+
+                    RecyclerView.Adapter adapter = new MoviePosterAdapter(getActivity().getApplicationContext(),mData_new_releases);
+                    rv_new_releases.setAdapter(adapter);
+                    sfl_new_releases.stopShimmer();
+                    sfl_new_releases.setVisibility(View.GONE);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(ANError anError) {
+                Log.d("Oncreate", "onError: "+anError);
+            }
+        });
+    }
     public  void Initialize_Now_Playing(){
         rv_now_playing.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         rv_now_playing.setItemViewCacheSize(10);
         rv_now_playing.setDrawingCacheEnabled(true);
         rv_now_playing.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        AndroidNetworking.get("http://www.test.diljotsingh.com/get_now_playing_movies?no_of_pages=4").build().getAsJSONObject(new JSONObjectRequestListener() {
+
+        String url = getString(R.string.API_BASE_URL) + getString(R.string.API_MOVIE_UPCOMING_MOVIES);
+
+        AndroidNetworking.get(url)
+                .addQueryParameter("no_of_pages","4")
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG, "onResponse: "+response);
@@ -101,7 +153,14 @@ public class MoviesFragment extends Fragment {
         rv_popular.setItemViewCacheSize(10);
         rv_popular.setDrawingCacheEnabled(true);
         rv_popular.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        AndroidNetworking.get("http://www.test.diljotsingh.com/get_popular_movies?no_of_pages=4").build().getAsJSONObject(new JSONObjectRequestListener() {
+
+        String url = getString(R.string.API_BASE_URL) + getString(R.string.API_MOVIE_POPULAR_MOVIES);
+
+
+        AndroidNetworking.get(url)
+                .addQueryParameter("no_of_pages","4")
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG, "onResponse: "+response);
@@ -141,7 +200,14 @@ public class MoviesFragment extends Fragment {
         rv_top_rated.setItemViewCacheSize(10);
         rv_top_rated.setDrawingCacheEnabled(true);
         rv_top_rated.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        AndroidNetworking.get("http://www.test.diljotsingh.com/get_top_rated_movies?no_of_pages=4").build().getAsJSONObject(new JSONObjectRequestListener() {
+
+        String url = getString(R.string.API_BASE_URL) + getString(R.string.API_MOVIE_TOP_RATED_MOVIES);
+
+
+        AndroidNetworking.get(url)
+                .addQueryParameter("no_of_pages","4")
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG, "onResponse: "+response);
@@ -196,6 +262,11 @@ public class MoviesFragment extends Fragment {
         else
             sfl_top_rated.setVisibility(View.GONE);
 
+        if (mData_new_releases.isEmpty())
+            sfl_new_releases.setVisibility(View.VISIBLE);
+        else
+            sfl_new_releases.setVisibility(View.GONE);
+
 
 
     }
@@ -206,5 +277,6 @@ public class MoviesFragment extends Fragment {
         sfl_popular.stopShimmer();
         sfl_top_rated.stopShimmer();
         sfl_now_playing.stopShimmer();
+        sfl_new_releases.stopShimmer();
     }
 }

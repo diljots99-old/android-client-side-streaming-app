@@ -33,7 +33,7 @@ public class Movie implements Parcelable {
 
     double vote_average,popularity;
     ArrayList<Integer> genre_ids;
-    boolean adult, video, isPosterEmpty, isBackdropEmpty, streamable,torrent;
+    boolean adult, video, isPosterEmpty, isBackdropEmpty, streamable,torrent,isComplete=false;
     Uri poster_uri, backdrop_uri;
     List<HashMap> spoken_languages;
     List<String> genres;
@@ -69,7 +69,7 @@ public class Movie implements Parcelable {
             this.vote_count = (int) movie.get("vote_count");
             this.popularity = (double) movie.get("popularity");
             this.genres = new ArrayList<>();
-
+            this.isComplete =false;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -116,6 +116,7 @@ public class Movie implements Parcelable {
 
 
                 sources = sourcesJSON.toString();
+            this.isComplete =true;
 
 
 
@@ -209,6 +210,8 @@ public class Movie implements Parcelable {
         poster = in.readParcelable(Bitmap.class.getClassLoader());
         backdrop_urls = in.readArrayList(String.class.getClassLoader());
         sources = in.readString();
+        isComplete =in.readByte() != 0;
+
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -513,6 +516,14 @@ public class Movie implements Parcelable {
         this.backdrop_urls = backdrop_urls;
     }
 
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -559,6 +570,6 @@ public class Movie implements Parcelable {
         dest.writeParcelable( poster,flags);
         dest.writeList(backdrop_urls);
         dest.writeString(sources);
-
+        dest.writeByte((byte) (isComplete ? 1 : 0));
     }
 }

@@ -7,6 +7,8 @@
     <color name="colorText">#CFCCCC</color>
     <color name="colorTextLight">#FFFFFF</color>
     <color name="colorGrey">#555150</color>
-
+    <color name="error_color">#FF1100</color>
+    <color name="helper_text_color">#F44336</color>
+    <color name="hint_color">#F44336</color>
 
 </resources>

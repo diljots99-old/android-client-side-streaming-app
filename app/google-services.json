@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "760960931969",
+    "firebase_url": "https://dj-movies-and-shows.firebaseio.com",
+    "project_id": "dj-movies-and-shows",
+    "storage_bucket": "dj-movies-and-shows.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760960931969:android:fdb330ffca013478fed580",
+        "android_client_info": {
+          "package_name": "com.android.moviestreamer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760960931969-vrpi9sulfgphbfaiu0scf03jf30dbvbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.moviestreamer",
+            "certificate_hash": "c3c14b6556f9f3476509f82b2bcb84cee4114d5f"
+          }
+        },
+        {
+          "client_id": "760960931969-uenfbbp22q2sm3rntus02sgorkh8mv86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVRFr9ogE-P3rtVn9H6X2nNq2EXNs66Zg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760960931969-uenfbbp22q2sm3rntus02sgorkh8mv86.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

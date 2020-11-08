@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import com.android.moviestreamer.R;
 import com.android.moviestreamer.ui.movies.Movie;
 
+import com.frostwire.jlibtorrent.TorrentHandle;
 import com.github.se_bastiaan.torrentstream.StreamStatus;
 import com.github.se_bastiaan.torrentstream.Torrent;
 import com.github.se_bastiaan.torrentstream.TorrentOptions;
@@ -52,7 +53,29 @@ public class TorrentStreammer extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 200;
 
+    public TorrentStreammer(){
+        torrentOptions = new TorrentOptions.Builder()
+                .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
 
+                .maxConnections(10000000)
+                .build();
+
+        torrentStream = TorrentStream.init(torrentOptions);
+
+        Log.d(TAG, "TorrentStreammer: streamURL constructor "+StreamUrl);
+
+        torrentStream.startStream(StreamUrl);
+    }
+
+    public static void start(Context context, Movie movieItem, String url) {
+        Intent intent = new Intent(context, TorrentStreammer.class);
+
+        intent.putExtra("Movie", movieItem);
+        intent.putExtra("url", url);
+
+        context.startActivity(intent);
+        StreamUrl = url;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,16 +83,9 @@ public class TorrentStreammer extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, STORAGE}, PERMISSION_REQUEST_CODE);
         movieItem = getIntent().getParcelableExtra("Movie");
-        StreamUrl = getIntent().getStringExtra("url");
 
-        torrentOptions = new TorrentOptions.Builder()
-                .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-                .autoDownload(true)
-                .build();
 
-        torrentStream = TorrentStream.init(torrentOptions);
-        Log.d(TAG, "TorrentStreammer: streamURL"+StreamUrl);
-        torrentStream.startStream(StreamUrl);
+
 
 
 
@@ -125,13 +141,6 @@ public class TorrentStreammer extends AppCompatActivity {
             public void onStreamError(Torrent torrent, Exception e) {
 
                 e.printStackTrace();
-//
-//                Log.d(TAG, "onStreamError: "+torrent.getFileNames());
-//                Log.d(TAG, "onStreamError: + "+ torrent.getSaveLocation());
-//                Log.d(TAG, "onStreamError: + "+ torrent.getVideoFile());
-//                Log.d(TAG, "onStreamError: + "+ torrent.getState());
-//                Log.d(TAG, "onStreamError: + "+ torrent.getPiecesToPrepare());
-
 
             }
 
@@ -148,7 +157,7 @@ public class TorrentStreammer extends AppCompatActivity {
                     intent.putExtra("isTorrent",true);
                     startActivity(intent);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
 

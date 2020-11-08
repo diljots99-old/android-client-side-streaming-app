@@ -108,7 +108,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void searchMovies(String query){
-        String url = " http://www.test.diljotsingh.com/search/movie";
+        String url = getContext().getString(R.string.API_BASE_URL) + getContext().getString(R.string.API_SEARCH_MOVIE);
         moviesList = new ArrayList<>();
 
 

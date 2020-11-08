@@ -7,9 +7,30 @@
     <string name="title_Movies">Movies</string>
     <string name="title_Series">Series</string>
     <string name="title_live_tv">Live TV</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cast"><![CDATA[Cast & Crew]]></string>
     <string name="search_hint">Movies ,Series, Channels</string>
+    <string name="password_edit_text_helper_text">Password Helper Text</string>
+    <string name="password_edit_text_hint">Password Hint ext</string>
+
+    <string name="email_invalid_msg">Please enter valid e-mail</string>
+
+    <string name="API_BASE_URL">https://movieapi.diljotsingh.com/api/</string>
+
+<!--    <string name="API_BASE_URL">http://192.168.1.74:8080/api/</string>-->
+    <string name="API_MOVIE_UPCOMING_MOVIES">movie/now_playing/</string>
+    <string name="API_CREATE_NEW_USER">user/</string>
+    <string name="API_ENDPOINT_MOVIE_POSTER">movie/poster/</string>
+    <string name="API_ENDPOINT_MOVIE_DETAILS">movie/details/</string>
+    <string name="API_MOVIE_POPULAR_MOVIES">movie/popular/</string>
+    <string name="API_MOVIE_TOP_RATED_MOVIES">movie/top_rated/</string>
+    <string name="API_MOVIE_NEW_RELEASES_MOVIES">movie/new_releases/</string>
+    <string name="API_DOWNLOAD_TORRENT_FILE">file/torrent/</string>
+    <string name="API_MOVIE_SIMILAR_MOVIES">movie/similar/</string>
+    <string name="API_MOVIE_CREDITS_MOVIES">movie/credits/</string>
+    <string name="API_MOVIE_PEOPLE_PROFILE_IMAGE">people/profile_picture/</string>
+    <string name="API_SEARCH_MOVIE">search/movie/</string>
+
 
 </resources>

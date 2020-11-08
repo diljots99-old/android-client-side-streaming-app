@@ -24,7 +24,12 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerDrawable;
@@ -40,72 +45,98 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     private List<Movie> mData;
     private Context mContext;
 
-    public MoviePosterAdapter(Context mContext,List<Movie> mData) {
-            this.mData = mData;
-            SIZE = mData.size();
-            this.mContext = mContext;
-        }
+    public MoviePosterAdapter(Context mContext, List<Movie> mData) {
+        this.mData = mData;
+        SIZE = mData.size();
+        this.mContext = mContext;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_poster_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_poster_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-            holder.tvMovieName.setText(mData.get(position).getTitle());
-            String url = "http://www.test.diljotsingh.com/get_movie_poster/" + mData.get(position).getId() +"?width=200&language=en";
+        holder.tvMovieName.setText(mData.get(position).getTitle());
+        String url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_ENDPOINT_MOVIE_POSTER) + mData.get(position).getId() + "?width=200&language=en";
+
+        loadPoster(holder,position,url);
+//        Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).setBaseAlpha(0.9f).setHighlightAlpha(0.8f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT).build();
+////        Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).build();
+//
+//
+//        ShimmerDrawable shimmerDrawable = new ShimmerDrawable();
+//        shimmerDrawable.setShimmer(shimmer);
+//        Glide.with(mContext)
+//                .load(url)
+//                .placeholder(shimmerDrawable)
+//                .error(R.drawable.poster_placeholder_dark)
+//                .centerCrop()
+//                .fitCenter()
+//                .into(holder.ivMoviePoster);
+        String get_complete_movie_details_url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_ENDPOINT_MOVIE_DETAILS) + "{id}";
+
+        holder.cl_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mData.get(position).isComplete()) {
+                    Intent intent = new Intent(mContext, MovieDetailsActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("movie", mData.get(position));
+                    mContext.startActivity(intent);
+                } else {
+                    AndroidNetworking.get(get_complete_movie_details_url)
+                            .addPathParameter("id", String.valueOf(mData.get(position).getId()))
+                            .build()
+                            .getAsJSONObject(new JSONObjectRequestListener() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Movie movie = mData.get(position);
+                                    movie.loadMovieData(response);
+                                    Log.d("TAG", "onResponse: " + movie);
+                                    Log.d(TAG, "onResponse: " + movie.getOriginal_title());
+                                    mData.set(position, movie);
+
+                                    Intent intent = new Intent(mContext, MovieDetailsActivity.class);
+
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("movie", mData.get(position));
+                                    mContext.startActivity(intent);
+                                }
+
+                                @Override
+                                public void onError(ANError anError) {
+                                    anError.printStackTrace();
+                                }
+                            });
+                }
+            }
+        });
+
+
+    }
+    public void loadPoster(final ViewHolder holder, final int position,String url){
 
         Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).setBaseAlpha(0.9f).setHighlightAlpha(0.8f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT).build();
 //        Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).build();
 
 
-
         ShimmerDrawable shimmerDrawable = new ShimmerDrawable();
         shimmerDrawable.setShimmer(shimmer);
-            Glide.with(mContext)
-                    .load(url)
-                    .placeholder(shimmerDrawable)
-
-                    .centerCrop()
-                    .into(holder.ivMoviePoster);
-
-
-
-        AndroidNetworking.get("http://www.test.diljotsingh.com/get_complete_movie_details/"+mData.get(position).getId())
-
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Movie movie = mData.get(position);
-                        movie.loadMovieData(response);
-                        Log.d("TAG", "onResponse: "+movie);
-                        Log.d(TAG, "onResponse: "+ movie.getOriginal_title());
-                        mData.set(position,movie);
-                        holder.cl_container.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new  Intent(mContext, MovieDetailsActivity.class);
-
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("movie",mData.get(position));
-                                mContext.startActivity(intent);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-
-                    }
-                });
-
-
-
+        Glide.with(mContext)
+                .load(url)
+                .placeholder(shimmerDrawable)
+                .error(R.drawable.poster_placeholder_dark)
+                .centerCrop()
+                .fitCenter()
+                .into(holder.ivMoviePoster);
     }
+
+
+
 
     @Override
     public int getItemCount() {
@@ -116,7 +147,6 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         public TextView tvMovieName;
         public ImageView ivMoviePoster;
         public ConstraintLayout cl_container;
-
 
 
         public ViewHolder(@NonNull View itemView) {

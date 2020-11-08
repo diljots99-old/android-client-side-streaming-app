@@ -31,7 +31,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         this.mContext = mContext;
         this.mData = mData;
         this.flags = flags;
-        this.SIZE = snapCount * rows;
+        if (mData.size() < snapCount * rows) {
+            this.SIZE = mData.size();
+
+        }else{
+            this.SIZE = snapCount * rows;
+
+        }
 
     }
 

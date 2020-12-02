@@ -61,22 +61,10 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.tvMovieName.setText(mData.get(position).getTitle());
-        String url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_ENDPOINT_MOVIE_POSTER) + mData.get(position).getId() + "?width=200&language=en";
+        String url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_ENDPOINT_MOVIE_POSTER) + mData.get(position).getId() + "?width=200";
 
         loadPoster(holder,position,url);
-//        Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).setBaseAlpha(0.9f).setHighlightAlpha(0.8f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT).build();
-////        Shimmer shimmer = new Shimmer.AlphaHighlightBuilder().setAutoStart(true).build();
-//
-//
-//        ShimmerDrawable shimmerDrawable = new ShimmerDrawable();
-//        shimmerDrawable.setShimmer(shimmer);
-//        Glide.with(mContext)
-//                .load(url)
-//                .placeholder(shimmerDrawable)
-//                .error(R.drawable.poster_placeholder_dark)
-//                .centerCrop()
-//                .fitCenter()
-//                .into(holder.ivMoviePoster);
+
         String get_complete_movie_details_url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_ENDPOINT_MOVIE_DETAILS) + "{id}";
 
         holder.cl_container.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +84,11 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
                                 public void onResponse(JSONObject response) {
                                     Movie movie = mData.get(position);
                                     movie.loadMovieData(response);
+                                    Log.d(TAG, "onResponse: "+response);
                                     Log.d("TAG", "onResponse: " + movie);
                                     Log.d(TAG, "onResponse: " + movie.getOriginal_title());
+                                    Log.d(TAG, "onResponse: " + movie.getGenres());
+
                                     mData.set(position, movie);
 
                                     Intent intent = new Intent(mContext, MovieDetailsActivity.class);

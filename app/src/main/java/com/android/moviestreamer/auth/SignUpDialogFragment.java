@@ -67,7 +67,7 @@ public class SignUpDialogFragment extends BottomSheetDialogFragment {
         View view = View.inflate(getContext(), R.layout.bottom_sheet_sign_up, null);
         dialog.setContentView(view);
 
-        coordinatorLayout= dialog.findViewById(R.id.root);
+        coordinatorLayout = dialog.findViewById(R.id.root);
         LinearLayout linearLayout = dialog.findViewById(R.id.bottomSheet);
         linearLayout.setMinimumHeight(getScreenHeight());
 
@@ -112,16 +112,16 @@ public class SignUpDialogFragment extends BottomSheetDialogFragment {
                                         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Email Sent. Please Verify to Continue", Snackbar.LENGTH_SHORT);
                                         snackbar.show();
 
-                                       new Handler().postDelayed(new Runnable() {
-                                           @Override
-                                           public void run() {
-                                                                                       dialog.dismiss();
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dialog.dismiss();
 
-                                           }
-                                       },4000);
+                                            }
+                                        }, 4000);
                                     } else {
                                         task.getException().printStackTrace();
-                                        Snackbar.make(coordinatorLayout,task.getException().getLocalizedMessage(),Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(coordinatorLayout, task.getException().getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
                                     }
                                 }
@@ -131,14 +131,14 @@ public class SignUpDialogFragment extends BottomSheetDialogFragment {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            if(e instanceof FirebaseAuthUserCollisionException){
+                            if (e instanceof FirebaseAuthUserCollisionException) {
                                 View snackView = dialog.getWindow().getDecorView();
-                                Snackbar.make(coordinatorLayout,e.getLocalizedMessage(),Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(coordinatorLayout, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
                                 til_email.setError(e.getLocalizedMessage());
                                 til_email.setErrorEnabled(true);
                             }
-                            Snackbar.make(coordinatorLayout,e.getLocalizedMessage(),Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(coordinatorLayout, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
                             Log.d(TAG, "onFailure: " + e.getLocalizedMessage());
                             Log.d(TAG, "onFailure: " + e.getMessage());
@@ -168,9 +168,11 @@ public class SignUpDialogFragment extends BottomSheetDialogFragment {
     private int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
+
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
+
     boolean isEmailValid() {
         String email = til_email.getEditText().getText().toString();
         if (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

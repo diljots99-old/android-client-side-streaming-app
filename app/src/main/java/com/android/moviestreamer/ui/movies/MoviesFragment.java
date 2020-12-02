@@ -1,5 +1,6 @@
 package com.android.moviestreamer.ui.movies;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +36,20 @@ public class MoviesFragment extends Fragment {
 
     List<Movie> mData_now_playing = new ArrayList<>();
     List<Movie> mData_new_releases = new ArrayList<>();
+
+    Context mContext;
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mContext = getActivity().getApplicationContext();
+
+
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +66,8 @@ public class MoviesFragment extends Fragment {
         sfl_popular = root.findViewById(R.id.sfl_popular);
         sfl_new_releases = root.findViewById(R.id.sfl_new_releases);
 
+        mContext = getActivity().getApplicationContext();
+
         Initialize_New_Releases();
         Initialize_Now_Playing();
         Initialize_Popular();
@@ -60,7 +78,7 @@ public class MoviesFragment extends Fragment {
     }
 
     public  void Initialize_New_Releases(){
-        rv_new_releases.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        rv_new_releases.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         rv_new_releases.setItemViewCacheSize(10);
         rv_new_releases.setDrawingCacheEnabled(true);
         rv_new_releases.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -88,7 +106,7 @@ public class MoviesFragment extends Fragment {
                         Log.d(TAG, "onResponse: "+movie);
                     }
 
-                    RecyclerView.Adapter adapter = new MoviePosterAdapter(getActivity().getApplicationContext(),mData_new_releases);
+                    RecyclerView.Adapter adapter = new MoviePosterAdapter(mContext,mData_new_releases);
                     rv_new_releases.setAdapter(adapter);
                     sfl_new_releases.stopShimmer();
                     sfl_new_releases.setVisibility(View.GONE);
@@ -104,7 +122,7 @@ public class MoviesFragment extends Fragment {
         });
     }
     public  void Initialize_Now_Playing(){
-        rv_now_playing.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        rv_now_playing.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         rv_now_playing.setItemViewCacheSize(10);
         rv_now_playing.setDrawingCacheEnabled(true);
         rv_now_playing.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -132,7 +150,7 @@ public class MoviesFragment extends Fragment {
                         Log.d(TAG, "onResponse: "+movie);
                     }
 
-                    RecyclerView.Adapter adapter = new MoviePosterAdapter(getActivity().getApplicationContext(),mData_now_playing);
+                    RecyclerView.Adapter adapter = new MoviePosterAdapter(mContext,mData_now_playing);
                     rv_now_playing.setAdapter(adapter);
                     sfl_now_playing.stopShimmer();
                     sfl_now_playing.setVisibility(View.GONE);
@@ -149,7 +167,7 @@ public class MoviesFragment extends Fragment {
     }
 
     public  void Initialize_Popular(){
-        rv_popular.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        rv_popular.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         rv_popular.setItemViewCacheSize(10);
         rv_popular.setDrawingCacheEnabled(true);
         rv_popular.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -180,7 +198,7 @@ public class MoviesFragment extends Fragment {
                         Log.d(TAG, "onResponse: "+movie);
                     }
 
-                    RecyclerView.Adapter adapter = new MoviePosterAdapter(getActivity().getApplicationContext(),mData_popular);
+                    RecyclerView.Adapter adapter = new MoviePosterAdapter(mContext,mData_popular);
                     rv_popular.setAdapter(adapter);
                     sfl_popular.stopShimmer();
                     sfl_popular.setVisibility(View.GONE);
@@ -196,7 +214,7 @@ public class MoviesFragment extends Fragment {
         });
     }
     public  void Initialize_Top_Rated(){
-        rv_top_rated.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        rv_top_rated.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         rv_top_rated.setItemViewCacheSize(10);
         rv_top_rated.setDrawingCacheEnabled(true);
         rv_top_rated.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -226,7 +244,7 @@ public class MoviesFragment extends Fragment {
                         Log.d(TAG, "onResponse: "+movie);
                     }
 
-                    RecyclerView.Adapter adapter = new MoviePosterAdapter(getActivity().getApplicationContext(),mData_top_Rated);
+                    RecyclerView.Adapter adapter = new MoviePosterAdapter(mContext,mData_top_Rated);
                     rv_top_rated.setAdapter(adapter);
 
                     sfl_top_rated.stopShimmer();
@@ -268,6 +286,7 @@ public class MoviesFragment extends Fragment {
             sfl_new_releases.setVisibility(View.GONE);
 
 
+        mContext = getActivity().getApplicationContext();
 
     }
 

@@ -1,5 +1,6 @@
 package com.android.moviestreamer.ui.movies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.android.moviestreamer.DashboardActivity;
+import com.android.moviestreamer.R;
 import com.android.moviestreamer.SplashScreenActivity;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -44,16 +46,40 @@ public class Movie implements Parcelable {
     List<HashMap> torrents;
     String sources ="";
 
-
+    Context mContext;
     Bitmap poster = null;
 
+    public Movie(int id, Context mContext) {
+        this.id = id;
+        this.mContext = mContext;
+        try{
+            String get_complete_movie_details_url = mContext.getString(R.string.API_BASE_URL) + mContext.getString(R.string.API_ENDPOINT_MOVIE_DETAILS) + "{id}";
+            AndroidNetworking.get(get_complete_movie_details_url)
+                    .addPathParameter("id",String.valueOf(id))
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    loadMovieData(response);
+                }
 
+                @Override
+                public void onError(ANError anError) {
+                    anError.printStackTrace();
+                    isComplete = false;
+
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            isComplete = false;
+        }
+    }
 
     public Movie(JSONObject movie ){
 
         try {
             this.id = (int) movie.get("id");
-            this.imdb_id = (String) movie.get("imdb_id");
+            this.imdb_id = String.valueOf(movie.get("imdb_id"));
             this.original_language = (String) movie.get("original_language");
             this.original_title  = (String) movie.get("original_title");
             this.release_date = (String) movie.get("release_date");
@@ -123,6 +149,7 @@ public class Movie implements Parcelable {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            this.isComplete =false;
         }
 
 

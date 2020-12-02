@@ -6,4 +6,5 @@
 
     <dimen name="poster_height">240dp</dimen>
     <dimen name="poster_width">135dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

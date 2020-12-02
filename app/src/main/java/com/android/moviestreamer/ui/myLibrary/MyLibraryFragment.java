@@ -1,4 +1,4 @@
-package com.android.moviestreamer.ui.notifications;
+package com.android.moviestreamer.ui.myLibrary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,18 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-import com.android.moviestreamer.DashboardActivity;
 import com.android.moviestreamer.R;
 import com.android.moviestreamer.auth.LoginScreenActivity;
+import com.android.moviestreamer.ui.search.RecentSearchFragment;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerDrawable;
@@ -32,7 +30,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class NotificationsFragment extends Fragment {
+public class MyLibraryFragment extends Fragment {
     private static final String TAG = "NotificationsFragment";
 
     FirebaseAuth mAuth;
@@ -41,6 +39,23 @@ public class NotificationsFragment extends Fragment {
     ShapeableImageView profile_image;
     TextView tv_username;
     private GoogleSignInClient mGoogleSignInClient;
+    private ProfileFragment profileFragment;
+    NavController navController;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,12 +82,70 @@ public class NotificationsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
         loadProfilePicture();
         loadUsername();
 
         btn_logout();
+        btn_your_profile();
+
+        btn_watch_later();
+        btn_history();
+        btn_favriotes();
+        btn_downloads();
+
         return root;
+    }
+
+    private void btn_watch_later() {
+        btn_watch_later.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_navigation_my_library_to_navigation_watch_later);
+            }
+        });
+    }
+
+    private void btn_downloads() {
+        btn_downloads.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_navigation_my_library_to_navigation_downloads);
+            }
+        });
+    }
+
+    private void btn_history() {
+        btn_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_navigation_my_library_to_navigation_history);
+            }
+        });
+    }
+
+    private void btn_favriotes() {
+        btn_favriotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_navigation_my_library_to_navigation_favorites);
+            }
+        });
+    }
+
+    void swapRecentFragment() {
+        profileFragment = new ProfileFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, profileFragment).addToBackStack(null).commit();
+    }
+
+    private void btn_your_profile() {
+        btn_your_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_navigation_my_library_to_navigation_profile);
+            }
+        });
     }
 
     void btn_logout() {

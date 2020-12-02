@@ -3,8 +3,9 @@
     <color name="colorPrimary">#E27D60</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="colorBackground">#393A3A</color>
     <color name="colorText">#CFCCCC</color>
+    <color name="colorBackground">#393A3A</color>
+    <color name="colorBackgroundTransparent">#B3393A3A</color>
     <color name="colorTextLight">#FFFFFF</color>
     <color name="colorGrey">#555150</color>
     <color name="error_color">#FF1100</color>

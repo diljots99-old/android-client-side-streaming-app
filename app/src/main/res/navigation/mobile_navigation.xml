@@ -19,7 +19,50 @@
 
     <fragment
         android:id="@+id/navigation_my_library"
-        android:name="com.android.moviestreamer.ui.notifications.NotificationsFragment"
+        android:name="com.android.moviestreamer.ui.myLibrary.MyLibraryFragment"
         android:label="@string/title_my_library"
-        tools:layout="@layout/fragment_my_library" />
+        tools:layout="@layout/fragment_my_library">
+        <action
+            android:id="@+id/action_navigation_my_library_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_my_library_to_navigation_history"
+            app:destination="@id/navigation_history" />
+        <action
+            android:id="@+id/action_navigation_my_library_to_navigation_watch_later"
+            app:destination="@id/navigation_watch_later" />
+        <action
+            android:id="@+id/action_navigation_my_library_to_navigation_favorites"
+            app:destination="@id/navigation_favorites" />
+        <action
+            android:id="@+id/action_navigation_my_library_to_navigation_downloads"
+            app:destination="@id/navigation_downloads" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.android.moviestreamer.ui.myLibrary.ProfileFragment"
+        android:label="@string/title_my_library"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.android.moviestreamer.ui.myLibrary.history.HistoryFragment"
+        android:label="@string/title_my_library"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.android.moviestreamer.ui.myLibrary.FavoritesFragment"
+        android:label="@string/title_my_library"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_watch_later"
+        android:name="com.android.moviestreamer.ui.myLibrary.WatchLaterFragment"
+        android:label="@string/title_my_library"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_downloads"
+        android:name="com.android.moviestreamer.ui.myLibrary.DownloadFragment"
+        android:label="@string/title_my_library"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

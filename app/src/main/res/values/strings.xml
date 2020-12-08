@@ -19,7 +19,7 @@
     <!--    <string name="API_BASE_URL">https://movieapi.diljotsingh.com/api/</string>-->
 
     <string name="API_BASE_URL">http://192.168.1.74:8080/api/</string>
-    <!--    <string name="API_BASE_URL">http://192.168.42.161:8080/api/</string>-->
+<!--        <string name="API_BASE_URL">http://192.168.42.161:8080/api/</string>-->
     <string name="API_MOVIE_UPCOMING_MOVIES">movie/now_playing/</string>
     <string name="API_CREATE_NEW_USER">user/</string>
     <string name="API_UPDATE_USER">user/</string>

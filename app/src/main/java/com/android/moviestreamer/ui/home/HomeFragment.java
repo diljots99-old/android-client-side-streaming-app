@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class    HomeFragment extends Fragment {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;

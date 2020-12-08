@@ -87,28 +87,28 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
         user = getCurrentUser();
-//        if (user == null){
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run () {
-////                startActivity(new Intent(SplashScreenActivity.this,DashboardActivity.class));
-//                startActivity(new Intent(SplashScreenActivity.this, LoginScreenActivity.class));
-//
-//                finish();
-//                }
-//            }, 3000);
-//        }else {
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run () {
+        if (user == null){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run () {
 //                startActivity(new Intent(SplashScreenActivity.this,DashboardActivity.class));
-////                startActivity(new Intent(SplashScreenActivity.this, LoginScreenActivity.class));
-//
-//                finish();
-//                }
-//            }, 3000);
-//
-//        }
+                startActivity(new Intent(SplashScreenActivity.this, LoginScreenActivity.class));
+
+                finish();
+                }
+            }, 3000);
+        }else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run () {
+                startActivity(new Intent(SplashScreenActivity.this,DashboardActivity.class));
+//                startActivity(new Intent(SplashScreenActivity.this, LoginScreenActivity.class));
+
+                finish();
+                }
+            }, 3000);
+
+        }
 
         AndroidNetworking.get(getString(R.string.API_BASE_URL)).build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
